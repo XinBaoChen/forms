@@ -1,0 +1,55 @@
+<div class="container">
+    <div class="form">
+        <form #form="ngForm" (ngSubmit) = "submitForm(form)">
+
+        <!--Form err msg-->
+        <div class="validMsg formError" *ngIf="formSubmit && form.invalid">
+            <p>There is a problem with the infomation in the form. Please enter the information again!</p>
+            <ul>
+                <li *ngIf="name.errors?.['required']">Enter a name</li>
+                <li *ngIf="name.errors?.['minlength']">Name must have at least 3 characters</li>
+                <li *ngIf="name.errors?.['pattern']">Name Must be only letters</li>
+                <li *ngIf="name.errors?.['required']">Email is required</li>
+                <li *ngIf="!email.valid">Invalid email address</li>
+            </ul>
+        </div>
+        <!---Collect user name-->
+        <div class="form_group">
+            <label for="n">Name</label>
+            <input required pattern="[a-zA-Z]*" type="text" id="n" [(ngModel)]="newUser.name"  
+            name="username" #name="ngModel" (change)="displayLog(name)" minlength="3" maxlength="24" ngModel class="form-control"
+            [value] ="newUser.name"/> 
+            <div class="validMsg" *ngIf="!name.valid && name.touched">
+                <p *ngIf="name.errors?.['required']">Enter a name</p>
+                <p *ngIf="name.errors?.['minlength']">Name must have at least 3 characters</p>
+                <p *ngIf="name.errors?.['pattern']">Name Must be only letters</p>
+            </div>
+        </div>
+     <!-- form control  -->
+        <!--Collect user email-->
+        <div class="form_group">
+            <label for="e">Email</label>
+            <input required type="email" id="e" [(ngModel)]="newUser.email" name="userEmail" 
+            #email ="ngModel"  ngModel class="form-control"  value="newUser.email"/>
+            <div class ="validMsg" *ngIf="!email.valid && email.touched">
+                <p *ngIf="!email.valid">Invalid email address</p>
+                <p *ngIf="name.errors?.['required']">Email is required</p>
+            </div>
+        </div>
+        <!--Submit button-->
+        <button class="submit_btn" [disabled]="formSubmit && form.invalid || !form.touched">Submit Button</button>
+
+         <!--Display JSON file-->
+         <div class="json_display" *ngIf="form.submitted" >
+            <p>Thank you for registering <b>{{parsedJsonName}}</b></p>
+            <p>Your order confirmation has been sent to <em><b></b>{{parsedJsonEmail}}</em></p>
+        </div>
+
+        <!-- testing if user was added -->
+        <!-- <ul>
+            <li *ngFor="let user of model.getUsers()">{{user.id}} - {{user.name}} -- {{user.email}}</li>
+        </ul> -->
+    </form>
+</div>
+</div>
+
